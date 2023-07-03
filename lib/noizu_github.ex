@@ -10,9 +10,8 @@ defmodule Noizu.Github do
   To configure the library, you need to set the Github API key and optionally,
   the Github organization in your application's configuration:
 
-      config :noizu_labs_open_ai,
-        Github_api_key: "your_api_key_here",
-        Github_org: "your_organization_id (optional)"
+      config :noizu_github,
+        github_api_key: "your_api_key_here",
   """
 
   #---------------------------------------
@@ -22,38 +21,27 @@ defmodule Noizu.Github do
 
   # option constraints
   @type stream_option() :: boolean
-  @type model_option(allowed) :: allowed | String.t
-  @type user_option() :: String.t
-  @type suffix_option() :: String.t
-  @type top_p_option() :: term
-  @type max_tokens_option() :: integer
-  @type temperature_option() :: float
-  @type completions_option() :: integer
-  @type log_probability_option() :: float
-  @type echo_option() :: term
-  @type stop_option() :: term
-  @type presence_penalty_option() :: term
-  @type frequency_penalty_option() :: term
-  @type best_of_option() :: term
-  @type logit_bias_option() :: term
-  @type language_option() :: String.t()
-  @type purpose_option() :: String.t()
-  @type response_format_option() :: String.t()
-  @type size_option() :: String.t()
-  @type mask_option() :: String.t()
-
-
 
   # Common Type
   @type stream_options() :: %{
                               optional(:stream) => boolean()
                             } | Keyword.t() | nil
 
-  @github_base "https://api.github.com/v1/"
+  @github_base "https://api.github.com"
 
   require Logger
 
   def github_base(), do: @github_base
+
+  def repo_name(options) do
+    options[:repo] || Application.get_env(:noizu_github, NoizuLabs.Github.Config)[:repo]
+  end
+
+  def repo_owner(options) do
+    options[:owner] || Application.get_env(:noizu_github, NoizuLabs.Github.Config)[:owner]
+  end
+
+
 
   #-------------------------------
   #
@@ -154,19 +142,14 @@ defmodule Noizu.Github do
   #-------------------------------
   #
   #-------------------------------
-  def headers() do
+  def headers(options) do
+    token = options[:token] || Application.get_env(:noizu_github, NoizuLabs.Github.Config)[:api_key]
     [
+      {"Accept", "application/vnd.github+json"},
       {"Content-Type", "application/json"},
-      {"Authorization", "Bearer #{Application.get_env(:noizu_labs_github, :github_api_key)}"}
-    ] |> then(
-           fn(headers) ->
-             if org = Application.get_env(:noizu_github, :github_org) do
-               headers ++ [{"Github-Organization", org}]
-             else
-               headers
-             end
-           end
-         )
+      {"Authorization", "Bearer #{token}"},
+      {"X-GitHub-Api-Version", "2022-11-28"},
+    ] |> IO.inspect(label: "HEADERS")
   end
 
   #-------------------------------
@@ -192,12 +175,30 @@ defmodule Noizu.Github do
     end
   end
 
+
+  #-------------------------------
+  #
+  #-------------------------------
+  def get_field(field, options, default \\ nil)
+  def get_field({field_alias, field}, options, default) do
+    if v = (options[field_alias] || options[field] || default) do
+      "#{field}=#{v}"
+    end
+  end
+  def get_field(field, options, default) do
+    if v = options[field] || default do
+      "#{field}=#{v}"
+    end
+  end
+
+
+
   #-------------------------------
   #
   #-------------------------------
   defp api_call_fetch(type, url, body, options) do
     ts = :os.system_time(:millisecond)
-    request = Finch.build(type, url, headers(), body)
+    request = Finch.build(type, url, headers(options), body)
     |> tap(
          fn(finch) ->
            case request_log_callback = options[:request_log_callback] do
@@ -227,7 +228,7 @@ defmodule Noizu.Github do
     callback = options[:stream]
     raw = options[:raw]
     ts = :os.system_time(:millisecond)
-    request = Finch.build(type, url, headers(), body)
+    request = Finch.build(type, url, headers(options), body)
               |> tap(
                    fn(finch) ->
                      case request_log_callback = options[:request_log_callback] do

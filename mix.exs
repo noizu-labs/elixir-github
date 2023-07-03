@@ -26,7 +26,7 @@ defmodule Noizu.Github.MixProject do
       links: %{
         project: "https://github.com/noizu-labs/elixir-github",
         noizu_labs: "https://github.com/noizu-labs",
-        developer_github: "https://github.com/noizu"
+        developer: "https://github.com/noizu"
       }
     ]
   end
