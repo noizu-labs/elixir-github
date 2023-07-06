@@ -30,6 +30,32 @@ defmodule Noizu.Github.Issue do
     :state_reason
   ]
 
+  def format(issue, format)
+  def format(issue, format) when is_list(issue) do
+    Enum.map(issue, &format(&1, format))
+  end
+  def format(%__MODULE__{} = this, :basic) do
+    labels = Noizu.Github.Label.format(this.labels, :basic)
+    %{
+      id: this.number,
+      internal_id: this.id,
+      url: this.html_url,
+      labels: labels,
+      title: this.title,
+      body: this.body,
+      state: this.state,
+      reactions: this.reactions,
+      user: Noizu.Github.User.format(this.user, :basic),
+      assignee: Noizu.Github.User.format(this.assignee, :basic),
+      assignees: Noizu.Github.User.format(this.assignees, :basic),
+      milestone:  this.milestone,
+      comments:  this.comments, #Noizu.Github.Comment.format(this.comments, :basic),
+      created_at:  this.created_at,
+      updated_at:  this.updated_at,
+      closed_at:  this.closed_at,
+    }
+  end
+
   def from_json(%{
     url: url,
     repository_url: repository_url,

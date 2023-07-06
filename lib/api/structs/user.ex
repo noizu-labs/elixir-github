@@ -20,6 +20,20 @@ defmodule Noizu.Github.User do
     :site_admin
   ]
 
+
+
+  def format(issue, format)
+  def format(issue, format) when is_list(issue) do
+    Enum.map(issue, &format(&1, format))
+  end
+  def format(%__MODULE__{} = this, :basic) do
+    %{
+      login: this.login,
+      avatar_url: this.avatar_url,
+      url: this.html_url
+    }
+  end
+
   def from_json(nil), do: nil
 
   def from_json(%{
