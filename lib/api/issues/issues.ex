@@ -102,6 +102,26 @@ defmodule Noizu.Github.Api.Issues do
   end
 
 
+  def search(search, options \\ nil)
+  def search("", options), do: list(options)
+  def search(search, options) do
+    owner = repo_owner(options)
+    repo = repo_name(options)
+
+    base_url = github_base() <> "/search/issues?q=is:issue%20repo:#{owner}/#{repo}&20#{search}"
+    state = get_field(:state, options, nil)
+
+    query_options = [state]
+                    |> Enum.filter(&(&1))
+    query_params = (unless query_options == [] do
+                      "?" <> Enum.join(query_options, "&")
+                    else
+                      ""
+                    end)
+    body = %{}
+    api_call(:get, base_url <> query_params, body, Noizu.Github.Issues, options)
+  end
+
   def list(options \\ nil) do
     owner = repo_owner(options)
     repo = repo_name(options)

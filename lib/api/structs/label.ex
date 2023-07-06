@@ -10,10 +10,11 @@ defmodule Noizu.Github.Label do
   ]
 
 
-  def format(issue, format)
-  def format(issue, format) when is_list(issue) do
-    Enum.map(issue, &format(&1, format))
+  def format(label, format)
+  def format(label, format) when is_list(label) do
+    Enum.map(label, &format(&1, format))
   end
+  def format(nil, _), do: nil
   def format(%__MODULE__{} = this, :basic) do
     %{
       name: this.name,
@@ -21,7 +22,11 @@ defmodule Noizu.Github.Label do
     }
   end
 
-    def from_json(%{
+  def from_json(v) when is_list(v) do
+    Enum.map(v, &from_json(&1))
+  end
+
+  def from_json(%{
     :id => id,
     :node_id => node_id,
     :url => url,

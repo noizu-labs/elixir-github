@@ -26,6 +26,7 @@ defmodule Noizu.Github.User do
   def format(issue, format) when is_list(issue) do
     Enum.map(issue, &format(&1, format))
   end
+  def format(nil, _), do: nil
   def format(%__MODULE__{} = this, :basic) do
     %{
       login: this.login,

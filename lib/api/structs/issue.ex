@@ -34,6 +34,7 @@ defmodule Noizu.Github.Issue do
   def format(issue, format) when is_list(issue) do
     Enum.map(issue, &format(&1, format))
   end
+  def format(nil, _), do: nil
   def format(%__MODULE__{} = this, :basic) do
     labels = Noizu.Github.Label.format(this.labels, :basic)
     %{
@@ -99,7 +100,7 @@ defmodule Noizu.Github.Issue do
       number: number,
       title: title,
       user: Noizu.Github.User.from_json(user),
-      labels: labels,
+      labels: Noizu.Github.Label.from_json(labels),
       state: state,
       locked: locked,
       assignee: Noizu.Github.User.from_json(assignee),
