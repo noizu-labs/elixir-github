@@ -123,7 +123,8 @@ defmodule Noizu.Github do
       end
     else
       with {:ok, body} <- body && Jason.encode(body) || {:ok, nil},
-           {:ok, %Finch.Response{status: 200, body: body}} <- api_call_fetch(type, url, body, options),
+           {:ok, %Finch.Response{status: code, body: body} = response} <- api_call_fetch(type, url, body, options),
+           true <- code in [200, 201] || {:error, response},
            {:ok, json} <- !raw && Jason.decode(body, keys: :atoms) || {:ok, body} do
         unless raw do
           {:ok, apply(model, :from_json, [json])}

@@ -7,8 +7,8 @@ defmodule Noizu.Github.Issues do
 
 
   def format(issue, format)
-  def format(issue, format) when is_list(issue) do
-    Enum.map(issue, &format(&1, format))
+  def format(issues, format) when is_list(issues) do
+    Enum.map(issues, &Noizu.Github.Issue.format(&1, format))
   end
   def format(%__MODULE__{} = this, format) do
     Enum.map(this.issues || [], &Noizu.Github.Issue.format(&1, format))
