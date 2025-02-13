@@ -129,7 +129,10 @@ defmodule Noizu.Github.Api.Issues do
     base_url = github_base() <> "/repos/#{owner}/#{repo}/issues"
     state = get_field(:state, options, nil)
 
-    query_options = [state]
+    query_options = [
+                      get_field(:state, options, nil),
+                      get_field(:per_page, options, nil),
+                      get_field(:page, options, nil)]
                     |> Enum.filter(&(&1))
     query_params = (unless query_options == [] do
                       "?" <> Enum.join(query_options, "&")

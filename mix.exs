@@ -50,7 +50,7 @@ defmodule Noizu.Github.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:finch, "~> 0.15"},
+      {:finch, "~> 0.19"},
       {:jason, "~> 1.2"},
       {:mimic, "~> 1.0.0", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}

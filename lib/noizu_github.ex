@@ -123,13 +123,13 @@ defmodule Noizu.Github do
       end
     else
       with {:ok, body} <- body && Jason.encode(body) || {:ok, nil},
-           {:ok, %Finch.Response{status: code, body: body} = response} <- api_call_fetch(type, url, body, options),
+           {:ok, %Finch.Response{status: code, body: body, headers: headers} = response} <- api_call_fetch(type, url, body, options),
            true <- code in [200, 201] || {:error, response},
            {:ok, json} <- !raw && Jason.decode(body, keys: :atoms) || {:ok, body} do
         unless raw do
-          {:ok, apply(model, :from_json, [json])}
+          {:ok, apply(model, :from_json, [json, headers])}
         else
-          {:ok, apply(model, :from_binary, [json])}
+          {:ok, apply(model, :from_binary, [json, headers])}
         end
 
       else
@@ -150,9 +150,31 @@ defmodule Noizu.Github do
       {"Content-Type", "application/json"},
       {"Authorization", "Bearer #{token}"},
       {"X-GitHub-Api-Version", "2022-11-28"},
-    ] |> IO.inspect(label: "HEADERS")
+    ]
   end
 
+  def extract_links(headers) do
+    if links = headers[:link] do
+      links
+      |> String.split(",")
+      |> Enum.map(fn link ->
+        [url, rel] = link
+                     |> String.trim()
+                     |> String.split(";")
+        url = String.replace(url, ~r/</, "")
+        url = String.replace(url, ~r/>/, "")
+        rel = String.replace(rel, ~r/rel="/, "")
+        rel = String.replace(rel, ~r/"/, "")
+        rel = String.trim(rel)
+        rel = %{"last" => :last, "next" => :next, "first" => :first, "prev" => :prev}[rel]
+        {rel, String.trim(url)}
+      end)
+      |> Enum.into(%{})
+    else
+      %{}
+    end
+  end
+  
   #-------------------------------
   #
   #-------------------------------

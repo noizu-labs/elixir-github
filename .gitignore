@@ -1,3 +1,6 @@
+.envrc
+.idea/
+.tool-versions
 /_build
 /cover
 /deps

@@ -44,9 +44,9 @@ defmodule Noizu.Github.Api.IssuesTest do
   title: "test",
   user: user(6298118),
   labels: [
-    %{color: "d73a4a", default: true, description: "Something isn't working", id: 5431772700, name: "bug", node_id: "LA_kwDOJbRdks8AAAABQ8JGHA", url: "https://api.github.com/repos/noizu-labs/the-robot-lives/labels/bug"},
-    %{color: "0075ca", default: true, description: "Improvements or additions to documentation", id: 5431772708, name: "documentation", node_id: "LA_kwDOJbRdks8AAAABQ8JGJA", url: "https://api.github.com/repos/noizu-labs/the-robot-lives/labels/documentation"},
-    %{color: "cfd3d7", default: true, description: "This issue or pull request already exists", id: 5431772715, name: "duplicate", node_id: "LA_kwDOJbRdks8AAAABQ8JGKw", url: "https://api.github.com/repos/noizu-labs/the-robot-lives/labels/duplicate"}
+    %Noizu.Github.Label{color: "d73a4a", default: true, description: "Something isn't working", id: 5431772700, name: "bug", node_id: "LA_kwDOJbRdks8AAAABQ8JGHA", url: "https://api.github.com/repos/noizu-labs/the-robot-lives/labels/bug"},
+    %Noizu.Github.Label{color: "0075ca", default: true, description: "Improvements or additions to documentation", id: 5431772708, name: "documentation", node_id: "LA_kwDOJbRdks8AAAABQ8JGJA", url: "https://api.github.com/repos/noizu-labs/the-robot-lives/labels/documentation"},
+    %Noizu.Github.Label{color: "cfd3d7", default: true, description: "This issue or pull request already exists", id: 5431772715, name: "duplicate", node_id: "LA_kwDOJbRdks8AAAABQ8JGKw", url: "https://api.github.com/repos/noizu-labs/the-robot-lives/labels/duplicate"}
   ],
   state: "open",
   locked: false,
@@ -74,15 +74,34 @@ defmodule Noizu.Github.Api.IssuesTest do
   },
   timeline_url: "https://api.github.com/repos/noizu-labs/the-robot-lives/issues/1/timeline",
   performed_via_github_app: nil,
-  state_reason: nil
+  state_reason: nil,
 }
-      ]}
-      Mimic.expect(Finch, :request, fn(_, _, _) -> {:ok, %Finch.Response{status: 200, body: issues_payload()}} end)
-      {:ok, result} = Noizu.Github.Api.Issues.issues(options)
+      ],
+        complete: true,
+        total: 1,
+        links: %{
+          last: "https://api.github.com/repos/noizu-labs/the-robot-lives/issues?page=5",
+          next: "https://api.github.com/repos/noizu-labs/the-robot-lives/issues?page=2"
+        }
+      }
+      Mimic.expect(Finch, :request, fn(_, _, _) -> {:ok, %Finch.Response{status: 200, body: issues_payload(), headers: issues_headers()}} end)
+      {:ok, result} = Noizu.Github.Api.Issues.list(options)
       assert response == result
     end
   end
 
+  def issues_headers() do
+    [
+      {
+        :link,
+        """
+        <https://api.github.com/repos/noizu-labs/the-robot-lives/issues?page=2>; rel="next",
+        <https://api.github.com/repos/noizu-labs/the-robot-lives/issues?page=5>; rel="last"
+        """
+      }
+    ]
+  end
+  
   def issues_payload() do
   """
   [

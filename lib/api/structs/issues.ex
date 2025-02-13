@@ -2,7 +2,8 @@ defmodule Noizu.Github.Issues do
   defstruct [
     :complete,
     :total,
-    :issues
+    :issues,
+    :links
   ]
 
 
@@ -14,21 +15,25 @@ defmodule Noizu.Github.Issues do
     Enum.map(this.issues || [], &Noizu.Github.Issue.format(&1, format))
   end
 
-  def from_json(issues) when is_list(issues) do
+  
+  def from_json(json, headers)
+  def from_json(issues, headers) when is_list(issues) do
     issues = Enum.map(issues || [], &(Noizu.Github.Issue.from_json(&1)))
     %__MODULE__{
       complete: true,
       total: length(issues),
-      issues: issues
+      issues: issues,
+      links: Noizu.Github.extract_links(headers)
     }
   end
 
-  def from_json(%{total_count: count, incomplete_results: incomplete, items: issues}) when is_list(issues) do
+  def from_json(%{total_count: count, incomplete_results: incomplete, items: issues} = a, headers) when is_list(issues) do
     issues = Enum.map(issues || [], &(Noizu.Github.Issue.from_json(&1)))
     %__MODULE__{
       complete: !incomplete,
       total: count,
-      issues: issues
+      issues: issues,
+      links: Noizu.Github.extract_links(headers)
     }
   end
 end
