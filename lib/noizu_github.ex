@@ -118,14 +118,14 @@ defmodule Noizu.Github do
         #apply(model, :from_json, [json])
       else
         error ->
-          Logger.warn("STREAM API ERROR: \n #{inspect error}")
+          Logger.warning("STREAM API ERROR: \n #{inspect error}")
           error
       end
     else
       with {:ok, body} <- body && Jason.encode(body) || {:ok, nil},
            {:ok, %Finch.Response{status: code, body: body, headers: headers} = response} <- api_call_fetch(type, url, body, options),
-           true <- code in [200, 201] || {:error, response},
-           {:ok, json} <- !raw && Jason.decode(body, keys: :atoms) || {:ok, body} do
+           true <- code in 200..299 || {:error, response},
+           {:ok, json} <- decode_response(body, raw) do
         unless raw do
           {:ok, apply(model, :from_json, [json, headers])}
         else
@@ -134,11 +134,18 @@ defmodule Noizu.Github do
 
       else
         error ->
-          Logger.warn("API ERROR: \n #{inspect error}")
+          Logger.warning("API ERROR: \n #{inspect error}")
           error
       end
     end
   end
+
+  # Decode a (possibly empty) response body. `204`/`202` and other empty
+  # success bodies decode to `nil`; raw requests pass the body through verbatim.
+  defp decode_response("", _raw), do: {:ok, nil}
+  defp decode_response(nil, _raw), do: {:ok, nil}
+  defp decode_response(body, true), do: {:ok, body}
+  defp decode_response(body, _raw), do: Jason.decode(body, keys: :atoms)
 
   #-------------------------------
   #
@@ -224,7 +231,7 @@ defmodule Noizu.Github do
     request = Finch.build(type, url, headers(options), body)
     |> tap(
          fn(finch) ->
-           case request_log_callback = options[:request_log_callback] do
+           case options[:request_log_callback] do
              nil -> :nop
              v when is_function(v, 1) -> v.(finch)
              {m,f} -> apply(m, f, [finch])
@@ -235,7 +242,7 @@ defmodule Noizu.Github do
     request
     |> Finch.request(Noizu.Github.Finch, [pool_timeout: 600_000, receive_timeout: 600_000])
     |> tap(fn(finch) ->
-      case response_log_callback = options[:response_log_callback] do
+      case options[:response_log_callback] do
         nil -> :nop
         v when is_function(v, 3) -> v.(finch, request, ts)
         {m,f} -> apply(m, f, [finch, request, ts])
@@ -254,7 +261,7 @@ defmodule Noizu.Github do
     request = Finch.build(type, url, headers(options), body)
               |> tap(
                    fn(finch) ->
-                     case request_log_callback = options[:request_log_callback] do
+                     case options[:request_log_callback] do
                        nil -> :nop
                        v when is_function(v, 1) -> v.(finch)
                        {m,f} -> apply(m, f, [finch])
@@ -266,12 +273,97 @@ defmodule Noizu.Github do
     request
     |> Finch.stream(Noizu.Github.Finch, %{status: nil, raw: raw, message: ""}, callback, [timeout: 600_000, receive_timeout: 600_000])
     |> tap(fn(finch) ->
-      case response_log_callback = options[:response_log_callback] do
+      case options[:response_log_callback] do
         nil -> :nop
         v when is_function(v, 3) -> v.(finch, request, ts)
         {m,f} -> apply(m, f, [finch, request, ts])
         _ -> :nop
       end
     end)
+  end
+
+  @doc """
+  Eagerly fetch all pages of a paginated endpoint, accumulating `:items`.
+
+  Takes a function that accepts an options keyword list and returns
+  `{:ok, result}` where `result` has `:items` and `:links` fields (any
+  `Collection.*` or `Raw` result), plus the initial options.
+
+  Follows `links[:next]` by incrementing the `:page` option until no next
+  link is present. Returns `{:ok, all_items}` or the first `{:error, _}`.
+
+  ## Example
+
+      {:ok, all} = Noizu.Github.paginate(
+        &Noizu.Github.Api.Issues.list_for_repo/1,
+        state: "open", per_page: 100
+      )
+
+  """
+  @spec paginate((keyword -> {:ok, term} | {:error, term}), keyword) ::
+          {:ok, list} | {:error, term}
+  def paginate(fetcher, options \\ []) do
+    do_paginate(fetcher, options, 1, [])
+  end
+
+  defp do_paginate(fetcher, options, page, acc) do
+    opts = Keyword.put(options, :page, page)
+    case fetcher.(opts) do
+      {:ok, %{items: items, links: links}} ->
+        acc = acc ++ items
+        if links[:next] do
+          do_paginate(fetcher, options, page + 1, acc)
+        else
+          {:ok, acc}
+        end
+
+      {:ok, %{data: _} = raw} ->
+        {:ok, acc ++ [raw]}
+
+      {:error, _} = error ->
+        error
+    end
+  end
+
+  @doc """
+  Return a lazy `Stream` that yields one `{:ok, result}` per page.
+
+  Each element is the full page result (with `:items`, `:links`, etc.).
+  The stream terminates when there is no `:next` link or when the fetcher
+  returns an error (the error tuple is yielded as the final element).
+
+  ## Example
+
+      Noizu.Github.stream_pages(
+        &Noizu.Github.Api.Issues.list_for_repo/1,
+        state: "open", per_page: 100
+      )
+      |> Enum.flat_map(fn
+        {:ok, %{items: items}} -> items
+        {:error, _} -> []
+      end)
+
+  """
+  @spec stream_pages((keyword -> {:ok, term} | {:error, term}), keyword) :: Enumerable.t()
+  def stream_pages(fetcher, options \\ []) do
+    Stream.resource(
+      fn -> 1 end,
+      fn
+        :halt ->
+          {:halt, :done}
+
+        page ->
+          opts = Keyword.put(options, :page, page)
+          case fetcher.(opts) do
+            {:ok, %{links: links} = result} ->
+              next = if links[:next], do: page + 1, else: :halt
+              {[{:ok, result}], next}
+
+            {:error, _} = error ->
+              {[error], :halt}
+          end
+      end,
+      fn _ -> :ok end
+    )
   end
 end
