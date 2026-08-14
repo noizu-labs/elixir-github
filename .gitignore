@@ -9,6 +9,7 @@ noizu_*tar
 /.fetch
 erl_crash.dump
 *.ez
+noizu_github-*.tar
 *.beam
 /config/*.secret.exs
 .elixir_ls/
