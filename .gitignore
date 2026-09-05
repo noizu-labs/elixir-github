@@ -14,3 +14,6 @@ noizu_github-*.tar
 /config/*.secret.exs
 .elixir_ls/
 *.iml
+
+# Canonical worktree placement
+.claude/worktrees/
