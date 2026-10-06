@@ -20,11 +20,15 @@ elixir-github/
 │   ├── test.exs                #   Test environment overrides
 │   └── test.secret.exs         #   Local test secrets (gitignored)
 ├── docs/                       # Documentation
-│   ├── PROJ-LAYOUT.md          #   This file
+│   ├── PROJ-LAYOUT.md          #   This file (+ .summary.md companion)
+│   ├── PROJ-ARCH.md            #   Architecture doc (+ .summary.md companion)
+│   ├── layout/                 #   lib.md, api.md — detailed per-directory trees
+│   ├── arch/                   #   generation.md, request-flow.md — deep-dives
 │   └── github-api/             #   Vendored OpenAPI specs (see below)
 ├── test/                       # Test suites
 │   ├── test_helper.exs
 │   ├── api/issues_test.exs     #   Client behaviour tests (uses mimic)
+│   ├── api/pagination_test.exs #   Link-header pagination tests
 │   └── gen/generator_test.exs  #   Generator regression tests
 ├── priv/                       # App priv assets
 │   ├── static/                 #   favicon.ico, robots.txt, images/logo.svg
@@ -34,6 +38,8 @@ elixir-github/
 ├── .gitignore                  # Ignores deps/_build/.tool-versions/.envrc/secrets
 ├── mix.exs                     # Project + dependency definition
 ├── mix.lock                    # Locked dependency versions
+├── AGENT.md / AGENTS.md        # Agent guidance (repo + multi-agent rules)
+├── CLAUDE.md                   # Claude Code guidance for this repo
 ├── LICENSE                     # MIT
 └── README.md                   # Start here — usage & configuration
 ```

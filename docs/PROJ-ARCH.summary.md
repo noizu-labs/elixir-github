@@ -46,3 +46,4 @@ OpenAPI · Mimic (test) · ex_doc (dev).
 
 - `arch/request-flow.md` — decode path, status/stream/pagination, logging hooks.
 - `arch/generation.md` — spec-to-code mapping, decode conventions, fallbacks.
+- `PROJ-SCHEMA.md` — config, option, and response contracts.
