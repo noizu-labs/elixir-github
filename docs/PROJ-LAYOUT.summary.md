@@ -13,13 +13,14 @@ elixir-github/
 │   │   └── structs/            #     826 structs + collection/ (110)
 │   └── mix/tasks/github.gen.ex #   `mix github.gen` generator
 ├── config/                     # config/dev/prod/test/runtime.exs + test.secret.exs
-├── docs/                       # PROJ-LAYOUT.md, layout/, github-api/ (OpenAPI specs)
-├── test/                       # api/issues_test.exs, gen/generator_test.exs
+├── docs/                       # PROJ-LAYOUT.md, PROJ-ARCH.md, layout/, arch/, github-api/ (OpenAPI specs)
+├── test/                       # api/ (issues, pagination), gen/generator_test.exs
 ├── priv/                       # static/, gettext/, repo/
 ├── .tool-versions             # Elixir 1.20 / OTP 29
 ├── .gitignore
 ├── mix.exs                     # :noizu_github project + deps
 ├── mix.lock
+├── AGENT.md / AGENTS.md / CLAUDE.md  # Agent guidance
 ├── LICENSE                     # MIT
 └── README.md
 ```

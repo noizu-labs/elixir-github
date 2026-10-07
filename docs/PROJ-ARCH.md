@@ -102,5 +102,6 @@ struct decode conventions, and the fallback/resolution rules.*
 ## References
 
 - [PROJ-LAYOUT.md](PROJ-LAYOUT.md) — navigable directory map.
+- [PROJ-SCHEMA.md](PROJ-SCHEMA.md) — config, option, and response contracts.
 - `docs/github-api/README.md` — provenance of the vendored OpenAPI spec.
 - `README.md` — usage and configuration.
