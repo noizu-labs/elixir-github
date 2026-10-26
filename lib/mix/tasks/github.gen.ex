@@ -1,5 +1,7 @@
 defmodule Mix.Tasks.Github.Gen do
   @moduledoc """
+  〚📦:4ccefe14-c7e7-55b2-8037-390a90e19432〛 Mix.Tasks.Github.Gen :: Code generator — OpenAPI description to the whole lib/api surface.
+
   Generates the full `Noizu.Github` REST client from the OpenAPI description in
   `docs/github-api/api.github.com.json`.
 

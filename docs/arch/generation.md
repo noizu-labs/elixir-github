@@ -1,5 +1,7 @@
 # Generation & Decode Hierarchy
 
+<!-- 〚📁:de8a86f1-4049-5adb-a347-66252c951c7e〛 elixir-github generation :: Generator pipeline — spec → structs, collections, category modules. -->
+
 How `mix github.gen` turns `docs/github-api/api.github.com.json` into the typed
 client surface, and how each emitted module decodes a response.
 

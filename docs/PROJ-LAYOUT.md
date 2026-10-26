@@ -1,5 +1,7 @@
 # Project Layout
 
+<!-- 〚📁:ea842b7f-ef1e-5229-ab7d-727e9ccb7713〛 elixir-github PROJ-LAYOUT :: Navigable directory map of the checkout. -->
+
 `elixir-github` — GitHub API wrapper for Elixir (`:noizu_github`). The full REST
 surface is generated from a vendored OpenAPI description; generated code lives
 under `lib/api/`.

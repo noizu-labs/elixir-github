@@ -1,5 +1,7 @@
 # elixir-github
 
+<!-- 〚📁:5dd8020e-3172-57c3-bde3-12d04e679083〛 elixir-github README :: Entry point — usage, setup, pagination helpers. -->
+
 GitHub API wrapper for Elixir (`Noizu.Github`).
 
 The full REST surface is generated from the vendored OpenAPI description in
