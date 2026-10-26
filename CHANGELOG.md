@@ -10,3 +10,5 @@ Dated work log. Newest first.
   note (versionless vs `2026-03-10` snapshots have diverged), and fixed threat
   model T-001 to describe what the logged `%Finch.Response{}` actually contains
   (response body/headers; not the request's Bearer token). Direct to `develop`.
+- docs: seed `.meta/pointers.yaml` with 10 doc-pointer anchors (README, core
+  client, format, generator, five primary docs files) (#5).
