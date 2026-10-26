@@ -15,8 +15,10 @@ by this library (`lib/noizu_github.ex`), along with the
 | `api.github.com.2026-03-10.yaml` / `api.github.com.2026-03-10.json` | Latest dated snapshot (2026-03-10). |
 
 All four are OpenAPI `3.0.3`, info version `1.1.4`, 787 paths. The versionless and
-`2026-03-10` files are currently identical; both are kept so a pinned snapshot is
-available even after the versionless files advance.
+`2026-03-10` snapshots have **diverged**: the versionless files now carry one
+extra schema (`gist-history`, 932 vs 931 schemas) and 20 paths whose definitions
+differ. Both are kept so a pinned snapshot stays available even after the
+versionless files advance; the generator reads the versionless JSON.
 
 ## Updating
 

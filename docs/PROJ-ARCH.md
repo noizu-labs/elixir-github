@@ -35,10 +35,10 @@ graph TB
 
 | Component | Purpose |
 |-----------|---------|
-| `Noizu.Github` (`noizu_github.ex`) | Core client. Single HTTP entry point `api_call/5`, auth/version headers, `Link`-header pagination parsing, query/body helpers. |
+| `Noizu.Github` (`noizu_github.ex`) | Core client. Single HTTP entry point `api_call/5`, auth/version headers, `Link`-header pagination parsing, query/body helpers, and the `paginate/2` / `stream_pages/2` page walkers. |
 | `Noizu.Github.Application` (`application.ex`) | OTP app; supervises the `{Finch, name: Noizu.Github.Finch}` HTTP pool. |
 | `Mix.Tasks.Github.Gen` (`github.gen.ex`) | Generator. Reads the OpenAPI spec, emits every module/struct under `lib/api/`. |
-| `Noizu.Github.Api.<Category>` (49 modules) | Generated. One function per operation; builds URL + body, delegates to `api_call/5`. |
+| `Noizu.Github.Api.<Category>` (48 modules) | Generated. One function per operation; builds URL + body, delegates to `api_call/5`. |
 | `Noizu.Github.<Schema>` (826 structs) | Generated. Permissive `from_json/2` decoders, one per object schema. |
 | `Noizu.Github.Collection.<Item>` (110 wrappers) | Generated. Typed list results carrying pagination links. |
 | `Noizu.Github.Raw` / `Noizu.Github.Collection` | Generated runtime fallbacks for unmapped/inline/empty bodies and untyped arrays. |

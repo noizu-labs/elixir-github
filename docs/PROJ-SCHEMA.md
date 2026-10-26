@@ -65,5 +65,6 @@ See `docs/github-api/README.md`.
 | `docs/github-api/api.github.com.{yaml,json}` | Canonical "latest" (versionless) descriptions |
 | `docs/github-api/api.github.com.2026-03-10.{yaml,json}` | Pinned dated snapshot |
 
-Counts currently asserted by the tree: 49 category modules, 826 structs,
-110 collection wrappers (`test/gen/generator_test.exs` guards coverage).
+Counts currently asserted by the tree: 48 category modules, 826 structs,
+110 collection wrappers (`test/gen/generator_test.exs` smoke-tests
+representative modules/structs, not exact counts).

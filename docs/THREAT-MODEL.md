@@ -30,7 +30,7 @@ graph LR
 
 | ID | Severity | STRIDE | Component | Status |
 |----|----------|--------|-----------|--------|
-| T-001 | High | Information disclosure | `api_call/5` error paths (`noizu_github.ex`) | Open |
+| T-001 | Medium | Information disclosure | `api_call/5` error paths (`noizu_github.ex`) | Open |
 | T-002 | Medium | DoS | `decode_response` (`keys: :atoms`) | Open |
 | T-003 | Low | Tampering | `mix github.gen` + vendored spec | Mitigated (provenance) |
 | T-004 | Low | Spoofing | Token egress destination | Mitigated (by design) |
@@ -38,15 +38,22 @@ graph LR
 
 ## Findings
 
-### T-001 — Bearer token can reach logs on any non-2xx
+### T-001 — Error paths log the whole response struct
 
 Both error branches log the raw error with `Logger.warning("API ERROR: \n
-#{inspect error}")` (and the stream variant). On a non-2xx status the `with`
-chain yields `{:error, %Finch.Response{}}`; `Finch.Response` carries the
-original `%Finch.Request{}` **including the `Authorization: Bearer …` header**,
-so a single failed call (401, 404, secondary-rate-limit 403) can write the token
-into consumer logs. Mitigation: redact request headers (or log only
-`status`/`body`) in the error paths.
+#{inspect error}")` (and the `STREAM API ERROR` variant). On a non-2xx status the
+`with` chain yields `{:error, %Finch.Response{}}`, so `inspect/1` writes the
+response **status, response headers, and the full response body** into consumer
+logs. Any repo/issue/user content or GitHub error detail returned by a failed
+call lands there.
+
+The **Bearer token is not** in that struct: `Finch.Response` (Finch `0.19`) holds
+only `status`/`headers`/`body` of the *response*; the `Authorization` header lives
+on the outgoing `%Finch.Request{}`, which is not part of the logged value. (The
+token *can* reach logs through the consumer-supplied `request_log_callback`,
+which does receive the request — see T-005.)
+
+Mitigation: log only `status` and a body excerpt in the error paths.
 
 ### T-002 — Atom-table growth via `Jason.decode(keys: :atoms)`
 
@@ -73,10 +80,12 @@ is out of scope for the library.
 
 ### T-005 — Log callbacks receive full request/response structs
 
-`request_log_callback` / `response_log_callback` are consumer-supplied and
-receive Finch structures including auth headers. The library never invokes them
-itself; whatever the consumer logs there is the consumer's control. Accepted,
-documented here.
+`request_log_callback` / `response_log_callback` are consumer-supplied.
+`request_log_callback` receives the outgoing `%Finch.Request{}` — including the
+`Authorization: Bearer` header — and `response_log_callback` receives the
+response plus the request. This is the one path by which the token can reach
+logs, and it is entirely consumer-owned: the library only invokes the callbacks
+the consumer installs. Accepted, documented here.
 
 ## Secret handling
 
@@ -86,9 +95,12 @@ is gitignored; no secret material is committed (verify when vendoring).
 
 ## Residual Risk
 
-T-001 and T-002 are open, known code-level issues with small patches; until
-fixed, consumers should treat their logs as token-bearing and avoid calling
-content-arbitrary endpoints in long-lived nodes. No other residual risk accepted.
+T-001 and T-002 are open code-level issues with small patches. Until T-001 is
+fixed, consumers should treat error-path logs as response-content-bearing (repo
+data, error bodies) — the token itself only reaches logs via consumer-supplied
+callbacks (T-005). Until T-002 is fixed, avoid repeatedly calling
+content-arbitrary endpoints from long-lived nodes. No other residual risk
+accepted.
 
 ## Mitigation Coverage
 

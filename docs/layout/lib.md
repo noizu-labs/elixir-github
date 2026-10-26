@@ -26,6 +26,10 @@ The core client every generated module imports.
 - `extract_links/1` — parses `Link` headers into `%{next: _, last: _, ...}` for
   pagination.
 - `put_field/4`, `get_field/3` — query/body field helpers used by generated code.
+- `paginate/2` — eagerly walk `links[:next]`, accumulating `:items` into
+  `{:ok, all_items}` (returns the first `{:error, _}` encountered).
+- `stream_pages/2` — lazy `Stream` variant yielding one `{:ok, page_result}` per
+  page; errors surface as the final element.
 - `generic_stream_provider/1` — SSE-style stream reducer (legacy chat-style path).
 
 ## application.ex (`Noizu.Github.Application`)

@@ -13,10 +13,11 @@ views. Generated code is disposable; hand-written code survives regeneration.
 ## Core Components
 
 - `Noizu.Github` — core client: single HTTP entry `api_call/5`, auth/version
-  headers, `Link`-header pagination parsing.
+  headers, `Link`-header pagination parsing, `paginate/2` / `stream_pages/2`
+  page walkers.
 - `Noizu.Github.Application` — OTP app supervising the Finch HTTP pool.
 - `Mix.Tasks.Github.Gen` — generator: OpenAPI spec → all of `lib/api/`.
-- `Noizu.Github.Api.<Category>` (49) — generated; one function per operation.
+- `Noizu.Github.Api.<Category>` (48) — generated; one function per operation.
 - `Noizu.Github.<Schema>` (826) — generated permissive `from_json/2` structs.
 - `Noizu.Github.Collection.<Item>` (110) — generated typed list results w/ links.
 - `Noizu.Github.Raw` / `Noizu.Github.Collection` — generated fallback models.

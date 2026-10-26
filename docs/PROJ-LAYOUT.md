@@ -52,7 +52,7 @@ top-level modules (`noizu_github.ex`, `application.ex`, `format.ex`) and the
 
 ## lib/api/ breakdown
 
-49 generated category modules, 826 schema structs, and 110 collection wrappers —
+48 generated category modules, 826 schema structs, and 110 collection wrappers —
 too large for this file. See [layout/api.md](layout/api.md) for the category list
 and the struct/collection grouping.
 
@@ -73,11 +73,12 @@ the generator reads. See `docs/github-api/README.md` for details.
 |------|--------|
 | `config/test.secret.exs` | Create locally; gitignored. Holds `api_key` for integration tests. |
 | `.envrc` | Create locally; gitignored. Used with direnv for shell env (`GITHUB_TOKEN`, etc.). |
-| `.tool-versions` | Present but gitignored; ensures Elixir 1.20 / OTP 29 via asdf/mise. |
+| `.tool-versions` | Not committed (gitignored); create locally to pin Elixir 1.20 / OTP 29 via asdf/mise. |
 
 ## Required runtimes
 
-From `.tool-versions`: Elixir `1.20.1-otp-29`, Erlang/OTP `29.0.2`.
+Elixir `1.20` / Erlang-OTP `29` (per `.tool-versions` when present locally; the
+file is gitignored and not part of the checkout).
 
 ## Dependencies (mix.exs)
 

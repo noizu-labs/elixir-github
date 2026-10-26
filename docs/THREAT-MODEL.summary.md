@@ -1,7 +1,8 @@
 # Threat Model (Summary)
 
 Library, not a service: outbound HTTPS to api.github.com only; no ingress, no
-store. Crown jewel = GitHub token. Detail: THREAT-MODEL.md.
+store. Crown jewel = GitHub token (reachable only through consumer-supplied log
+callbacks; see T-005). Detail: THREAT-MODEL.md.
 
 ## Register (counts)
 
@@ -10,9 +11,11 @@ store. Crown jewel = GitHub token. Detail: THREAT-MODEL.md.
 
 ## Open items
 
-- T-001 High · Info disclosure — `Logger.warning(inspect error)` on failed calls
-  can dump `%Finch.Response{}` incl. the `Authorization: Bearer` header into
-  consumer logs. Redact headers in error paths.
+- T-001 Medium · Info disclosure — `Logger.warning(inspect error)` on failed calls
+  dumps the whole `%Finch.Response{}` (status, response headers, **full response
+  body**) into consumer logs. The Bearer token is *not* in that struct (it lives
+  on the request, which is not logged); token exposure is limited to T-005's
+  consumer callbacks. Log only status + body excerpt.
 - T-002 Medium · DoS — `Jason.decode(keys: :atoms)` on response bodies; crafted
   content can mint unbounded atoms. Prefer `:atoms!`/key whitelisting.
 

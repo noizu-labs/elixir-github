@@ -5,7 +5,7 @@ Do not edit by hand — re-run the generator instead.
 
 ```
 lib/api/
-├── <category>/<category>.ex   # 49 API modules — Noizu.Github.Api.<Category>
+├── <category>/<category>.ex   # 48 API modules — Noizu.Github.Api.<Category>
 └── structs/
     ├── <schema>.ex            # 826 object-schema structs — Noizu.Github.<Schema>
     └── collection/<item>.ex   # 110 typed list wrappers — Noizu.Github.Collection.<Item>
@@ -18,18 +18,19 @@ One module per OpenAPI tag, one function per operation, dispatching through
 path params are positional function arguments.
 
 ```
-actions            agent_tasks        agents            api_insights
-apps               billing            campaigns         checks
-classroom          code_quality       code_scanning     code_security
-codes_of_conduct   codespaces         copilot           copilot_spaces
-credentials        dependabot         dependency_graph  emojis
-enterprise_team_memberships  enterprise_team_organizations  enterprise_teams
-gists              git                gitignore         hosted_compute
-interactions       issues             licenses          markdown
-meta               migrations         oidc              orgs
-packages           private_registries projects          pulls
-rate_limit         reactions          repos             search
-secret_scanning    security_advisories  teams           users
+actions            activity           agent_tasks        agents
+api_insights       apps               billing            campaigns
+checks             classroom          code_quality       code_scanning
+code_security      codes_of_conduct   codespaces         copilot
+copilot_spaces     credentials        dependabot         dependency_graph
+emojis             enterprise_team_memberships  enterprise_team_organizations
+enterprise_teams   gists              git                gitignore
+hosted_compute     interactions       issues             licenses
+markdown           meta               migrations         oidc
+orgs               packages           private_registries projects
+pulls              rate_limit         reactions          repos
+search             secret_scanning    security_advisories teams
+users
 ```
 
 ## Structs (`Noizu.Github.<Schema>`)

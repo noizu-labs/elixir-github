@@ -9,7 +9,7 @@ elixir-github/
 │   ├── application.ex          #   OTP app; starts Finch HTTP pool
 │   ├── format.ex               #   Curated :basic display projections
 │   ├── api/                    #   Generated API + structs → layout/api.md
-│   │   ├── <category>/         #     49 API modules
+│   │   ├── <category>/         #     48 API modules
 │   │   └── structs/            #     826 structs + collection/ (110)
 │   └── mix/tasks/github.gen.ex #   `mix github.gen` generator
 ├── config/                     # config/dev/prod/test/runtime.exs + test.secret.exs
