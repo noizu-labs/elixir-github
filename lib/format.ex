@@ -1,5 +1,7 @@
 defmodule Noizu.Github.Format do
   @moduledoc """
+  〚📦:ab86f087-7158-5bbe-8034-d281ac200fc4〛 Noizu.Github.Format :: Hand-maintained curated :basic display projections over generated structs.
+
   Hand-maintained, curated views over generated structs.
 
   The generated structs under `lib/api/structs/` are full, spec-faithful and

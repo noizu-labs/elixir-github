@@ -1,5 +1,7 @@
 # Project Schema
 
+<!-- 〚📁:d4d41660-cd7e-57bc-a1ca-3865971f496c〛 elixir-github PROJ-SCHEMA :: Data contracts — app-env config, request options, response shapes. -->
+
 `elixir-github` is an API-wrapper library (`:noizu_github`) with **no relational
 persistence** — no Ecto schemas, migrations, or KV store. The "schema" surface is:
 

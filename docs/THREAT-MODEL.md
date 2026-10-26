@@ -1,5 +1,7 @@
 # Threat Model
 
+<!-- 〚📁:7a02099e-3840-50f5-96cf-d873d883157d〛 elixir-github THREAT-MODEL :: Living threat model — token flow, trust boundaries, vulnerability register. -->
+
 `elixir-github` is a **library**, not a deployed service: it runs inside a
 consumer's BEAM process and makes credentialed outbound calls to
 `https://api.github.com`. There is no ingress, no datastore, and no UI. The

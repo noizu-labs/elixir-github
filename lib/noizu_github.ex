@@ -1,5 +1,7 @@
 defmodule Noizu.Github do
   @moduledoc """
+  〚📦:29642876-c156-5e28-82b9-52c911ff432e〛 Noizu.Github :: Core client — single api_call/5 transport, headers, pagination walkers.
+
   Noizu.Github is a library providing a simple wrapper around Github's API calls.
   It handles various API features such as completions, chat, edit, image generation,
   image editing, image variation, embeddings, audio transcription, audio translation, file management,

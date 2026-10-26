@@ -1,0 +1,122 @@
+---
+pointers:
+  29642876-c156-5e28-82b9-52c911ff432e:
+    created_at: 2026-10-26T23:31:12.439954Z
+    description: Core client — single api_call/5 transport, headers, pagination walkers.
+    file_path: lib/noizu_github.ex
+    function: Noizu.Github
+    kind: module
+    line: 3
+    locations:
+      - file_path: lib/noizu_github.ex
+        line: 3
+    token: 𓂾𓣨𓬛𓑮
+    updated_at: 2026-10-26T23:31:12.439954Z
+  4ccefe14-c7e7-55b2-8037-390a90e19432:
+    created_at: 2026-10-26T23:31:12.439971Z
+    description: Code generator — OpenAPI description to the whole lib/api surface.
+    file_path: lib/mix/tasks/github.gen.ex
+    function: Mix.Tasks.Github.Gen
+    kind: module
+    line: 3
+    locations:
+      - file_path: lib/mix/tasks/github.gen.ex
+        line: 3
+    token: 𓠙𓇗𔍁𓆢
+    updated_at: 2026-10-26T23:31:12.439971Z
+  5dd8020e-3172-57c3-bde3-12d04e679083:
+    created_at: 2026-10-26T23:31:12.440001Z
+    description: Entry point — usage, setup, pagination helpers.
+    file_path: README.md
+    function: elixir-github README
+    kind: file
+    line: 3
+    locations:
+      - file_path: README.md
+        line: 3
+    token: 𓭜𓭿𓸴𓧓
+    updated_at: 2026-10-26T23:31:12.440001Z
+  7a02099e-3840-50f5-96cf-d873d883157d:
+    created_at: 2026-10-26T23:31:12.439995Z
+    description: Living threat model — token flow, trust boundaries, vulnerability register.
+    file_path: docs/THREAT-MODEL.md
+    function: elixir-github THREAT-MODEL
+    kind: file
+    line: 3
+    locations:
+      - file_path: docs/THREAT-MODEL.md
+        line: 3
+    token: 𓫪𓆢𔐟𓋍
+    updated_at: 2026-10-26T23:31:12.439995Z
+  ab86f087-7158-5bbe-8034-d281ac200fc4:
+    created_at: 2026-10-26T23:31:12.440005Z
+    description: Hand-maintained curated :basic display projections over generated structs.
+    file_path: lib/format.ex
+    function: Noizu.Github.Format
+    kind: module
+    line: 3
+    locations:
+      - file_path: lib/format.ex
+        line: 3
+    token: 𓵴𓯷𔀪𔅴
+    updated_at: 2026-10-26T23:31:12.440005Z
+  c38df2bc-8fb1-5197-90d0-b133006dffac:
+    created_at: 2026-10-26T23:31:12.439991Z
+    description: Provenance and update procedure for the vendored OpenAPI descriptions.
+    file_path: docs/github-api/README.md
+    function: elixir-github vendored spec
+    kind: file
+    line: 3
+    locations:
+      - file_path: docs/github-api/README.md
+        line: 3
+    token: 𓫗𓻨𔎅𓚌
+    updated_at: 2026-10-26T23:31:12.439991Z
+  d4d41660-cd7e-57bc-a1ca-3865971f496c:
+    created_at: 2026-10-26T23:31:12.439998Z
+    description: Data contracts — app-env config, request options, response shapes.
+    file_path: docs/PROJ-SCHEMA.md
+    function: elixir-github PROJ-SCHEMA
+    kind: file
+    line: 3
+    locations:
+      - file_path: docs/PROJ-SCHEMA.md
+        line: 3
+    token: 𓬽𔀻𓳡𓴌
+    updated_at: 2026-10-26T23:31:12.439998Z
+  de8a86f1-4049-5adb-a347-66252c951c7e:
+    created_at: 2026-10-26T23:31:12.439988Z
+    description: Generator pipeline — spec → structs, collections, category modules.
+    file_path: docs/arch/generation.md
+    function: elixir-github generation
+    kind: file
+    line: 3
+    locations:
+      - file_path: docs/arch/generation.md
+        line: 3
+    token: 𓪕𔓷𔒦𓿮
+    updated_at: 2026-10-26T23:31:12.439988Z
+  ea842b7f-ef1e-5229-ab7d-727e9ccb7713:
+    created_at: 2026-10-26T23:31:12.439975Z
+    description: Navigable directory map of the checkout.
+    file_path: docs/PROJ-LAYOUT.md
+    function: elixir-github PROJ-LAYOUT
+    kind: file
+    line: 3
+    locations:
+      - file_path: docs/PROJ-LAYOUT.md
+        line: 3
+    token: 𓠥𔕽𓄸𓍳
+    updated_at: 2026-10-26T23:31:12.439975Z
+  f7153a8f-6b95-5b24-9679-87fbea29bbd0:
+    created_at: 2026-10-26T23:31:12.439979Z
+    description: Architecture overview — components, request/decode flow, key decisions.
+    file_path: docs/PROJ-ARCH.md
+    function: elixir-github PROJ-ARCH
+    kind: file
+    line: 3
+    locations:
+      - file_path: docs/PROJ-ARCH.md
+        line: 3
+    token: 𓣃𓩞𔎬𓅰
+    updated_at: 2026-10-26T23:31:12.439979Z

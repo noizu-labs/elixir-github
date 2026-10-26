@@ -1,5 +1,7 @@
 # GitHub REST API OpenAPI Specs
 
+<!-- 〚📁:c38df2bc-8fb1-5197-90d0-b133006dffac〛 elixir-github vendored spec :: Provenance and update procedure for the vendored OpenAPI descriptions. -->
+
 Vendored copies of GitHub's official REST API OpenAPI descriptions, sourced from
 the canonical repository: <https://github.com/github/rest-api-description>
 

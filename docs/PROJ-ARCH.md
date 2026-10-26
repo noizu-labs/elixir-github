@@ -1,5 +1,7 @@
 # Project Architecture
 
+<!-- 〚📁:f7153a8f-6b95-5b24-9679-87fbea29bbd0〛 elixir-github PROJ-ARCH :: Architecture overview — components, request/decode flow, key decisions. -->
+
 `elixir-github` (`:noizu_github`) is a spec-driven Elixir client for the GitHub
 REST API. Rather than hand-maintaining hundreds of endpoints, a generator
 (`mix github.gen`) reads a vendored OpenAPI description and emits the entire
