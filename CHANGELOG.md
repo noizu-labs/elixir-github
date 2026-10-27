@@ -2,6 +2,10 @@
 
 Dated work log. Newest first.
 
+## 2026-10-28
+
+- docs: add AGENT-README.md (agent orientation)
+
 ## 2026-10-26
 
 - docs: doc-sweep — corrected generated-surface counts (48 API modules, not 49),
